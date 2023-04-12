@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package proto.file.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/asadzeynal/file-task/pb";
+
+message FileEntry {
+  string name = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+
+message UploadRequest {
+  string mime = 1;
+  bytes file = 2;
+}
+
+message UploadResponse {
+  string name = 1;
+}
+
+message LSRequest {}
+message LSResponse {}
+
+service FileService {
+  rpc Upload(UploadRequest) returns (UploadResponse) {}
+}
