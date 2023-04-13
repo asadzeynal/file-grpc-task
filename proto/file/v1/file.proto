@@ -6,15 +6,15 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/asadzeynal/file-task/pb";
 
+// AFAIK ext4 does not store created timestamp
 message FileEntry {
   string name = 1;
-  google.protobuf.Timestamp created_at = 2;
-  google.protobuf.Timestamp updated_at = 3;
+  google.protobuf.Timestamp updated_at = 2;
 }
 
 message UploadRequest {
-  string mime = 1;
-  bytes file = 2;
+  string name = 2;
+  bytes file = 3;
 }
 
 message UploadResponse {
@@ -22,8 +22,20 @@ message UploadResponse {
 }
 
 message LSRequest {}
-message LSResponse {}
+message LSResponse {
+  repeated FileEntry files = 1;
+}
+
+message DownloadRequest {
+  string name = 1;
+}
+
+message DownloadResponse {
+  bytes file = 1;
+}
 
 service FileService {
   rpc Upload(UploadRequest) returns (UploadResponse) {}
+  rpc LS(LSRequest) returns (LSResponse) {}
+  rpc Download(DownloadRequest) returns (DownloadResponse) {}
 }
